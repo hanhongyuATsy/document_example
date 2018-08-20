@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [['$','$'], ['\\(','\\)']]}});</script>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS": {"availableFonts":["TeX"],"scale": 150}});</script>
+
+<style>
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: "Segoe WPC", "Segoe UI", "SFUIText-Light", "HelveticaNeue-Light", sans-serif, "Droid Sans Fallback";
+	font-size: 14px;
+	padding: 0 12px;
+	line-height: 22px;
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	color: #4080D0;
+	text-decoration: none;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+h1 code,
+h2 code,
+h3 code,
+h4 code,
+h5 code,
+h6 code {
+	font-size: inherit;
+	line-height: auto;
+}
+
+a:hover {
+	color: #4080D0;
+	text-decoration: underline;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left: 5px solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 14px;
+	line-height: 19px;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+.mac code {
+	font-size: 12px;
+	line-height: 18px;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+/** Theming */
+
+.vscode-light,
+.vscode-light pre code {
+	color: rgb(30, 30, 30);
+}
+
+.vscode-dark,
+.vscode-dark pre code {
+	color: #DDD;
+}
+
+.vscode-high-contrast,
+.vscode-high-contrast pre code {
+	color: white;
+}
+
+.vscode-light code {
+	color: #A31515;
+}
+
+.vscode-dark code {
+	color: #D7BA7D;
+}
+
+.vscode-light pre:not(.hljs),
+.vscode-light code > div {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre:not(.hljs),
+.vscode-dark code > div {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre:not(.hljs),
+.vscode-high-contrast code > div {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+.vscode-light blockquote,
+.vscode-dark blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.vscode-high-contrast blockquote {
+	background: transparent;
+	border-color: #fff;
+}
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+</style>
+
+</head>
+<body>
+<h1 id="%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96%E5%8E%BB%E9%80%94%E5%BE%84%E8%B0%83%E6%9F%A5">数据获取去途径调查</h1>
+<h2 id="1%E3%80%81%E8%83%8C%E6%99%AF">1、背景</h2>
+<ol>
+<li>基于Git版本 <code>dev</code> 分支的 <code>b733fb01d15d550dd057ecf58ca64facffdfdd51</code> commit 进行的调查。</li>
+<li>调查范围限于Pricing部分（不包括OC、Display部分）</li>
+</ol>
+<h2 id="2%E3%80%81%E8%B0%83%E6%9F%A5%E5%86%85%E5%AE%B9">2、调查内容</h2>
+<h3 id="2-1-%E8%B0%83%E6%9F%A5%E5%85%A5%E5%8F%A3">2-1 调查入口</h3>
+<p>调查<code>RapidCode</code>数据的取得过程。</p>
+<h3 id="2-2-pool%E4%B8%8Epoolmanager-%E7%9A%84%E5%86%85%E5%BB%BAmap%E7%BC%93%E5%AD%98">2-2 POOL与poolmanager 的内建map缓存</h3>
+<ol>
+<li>
+<p>数据通过POOL-&gt;getRapidCode()取得数据。(Engine\PricingEngine\BusinessProcess\abitemprocess.cc  Line:8
+Engine\PricingEngine\BusinessProcess\baggageprocess.cc Line:485 等)</p>
+</li>
+<li>
+<p>POOL是poolmanager的单例对象。</p>
+</li>
+</ol>
+<pre class="hljs"><code><div><span class="hljs-comment">//Engine\PricingEngine\BusinessProcess\Pool\poolmanager.h Line 2864</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> POOL PoolManager::instance()</span>
+</div></code></pre>
+<ol start="3">
+<li>先查找建map缓存是否可以查到数据</li>
+</ol>
+<pre class="hljs"><code><div><span class="hljs-comment">//Engine\PricingEngine\BusinessProcess\Pool\poolmanager.cc Line 1031</span>
+<span class="hljs-comment">//Engine\PricingEngine\BusinessProcess\Pool\poolmanager.cc Line 1092</span>
+<span class="hljs-comment">//Engine\PricingEngine\BusinessProcess\Pool\poolmanager.cc Line 2286</span>
+<span class="hljs-comment">//Engine\PricingEngine\BusinessProcess\Pool\poolmanager.cc Line 2347</span>
+<span class="hljs-comment">//以2347为例</span>
+<span class="hljs-keyword">int</span> PoolManager::getRapidCode(<span class="hljs-keyword">const</span> <span class="hljs-built_in">string</span>&amp; lookupType,
+                              <span class="hljs-keyword">const</span> <span class="hljs-built_in">string</span>&amp; carrCode,
+                              <span class="hljs-keyword">const</span> <span class="hljs-built_in">string</span>&amp; lookupCode,
+                              <span class="hljs-keyword">const</span> <span class="hljs-built_in">string</span>&amp; saleDateTime,
+                              <span class="hljs-keyword">const</span> <span class="hljs-built_in">string</span>&amp; travelDateTime,
+                              <span class="hljs-built_in">string</span>&amp; usr)
+{
+   <span class="hljs-function">PoolKey <span class="hljs-title">key</span><span class="hljs-params">(lookupType,
+               carrCode,
+               lookupCode,
+               saleDateTime,
+               travelDateTime)</span></span>;
+
+   <span class="hljs-built_in">map</span>&lt;PoolKey, <span class="hljs-built_in">string</span>* &gt;::iterator iter =_poolRapidCode.find(key);
+   <span class="hljs-keyword">if</span>(iter != _poolRapidCode.end())
+   {
+       <span class="hljs-keyword">if</span>(iter-&gt;second != <span class="hljs-literal">NULL</span>)
+       {
+           usr = *iter-&gt;second;
+           <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+       }
+       <span class="hljs-keyword">else</span>
+       {
+           <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+       }
+   }
+   <span class="hljs-keyword">else</span>
+   {
+        <span class="hljs-comment">//其他方式查找（Cache、DB），如果找到添加至_poolRapidCode map缓存中。</span>
+        DaoRapidCode* daoFetcher = <span class="hljs-keyword">dynamic_cast</span>&lt;DaoRapidCode*&gt;(DaoHelper::instance()-&gt;getDao(DaoType::RAPIDCODE));
+       <span class="hljs-keyword">int</span> row = daoFetcher-&gt;getInfo(lookupType,
+                                 carrCode,
+                                 lookupCode,
+                                 saleDateTime,
+                                 travelDateTime,
+                                 usr);
+       <span class="hljs-keyword">if</span>(row &gt; <span class="hljs-number">0</span>)
+       {
+           _poolRapidCode[key] = <span class="hljs-keyword">new</span> <span class="hljs-built_in">string</span>(usr);
+       }
+       <span class="hljs-keyword">else</span>
+       {
+           _poolRapidCode[key] = <span class="hljs-literal">NULL</span>;
+       }
+       <span class="hljs-keyword">return</span> row;
+   }
+}
+</div></code></pre>
+<h3 id="2-3-%E9%80%9A%E8%BF%87daohelper%E6%9F%A5%E6%89%BEcache%E6%88%96db">2-3 通过DaoHelper查找Cache或DB</h3>
+<ol>
+<li>如果内建map没有查找到则会进一步调用DaoHelper来查找数据</li>
+</ol>
+<pre class="hljs"><code><div><span class="hljs-comment">//Engine\PricingEngine\BusinessProcess\Pool\poolmanager.cc   Line 2375</span>
+        DaoRapidCode* daoFetcher = <span class="hljs-keyword">dynamic_cast</span>&lt;DaoRapidCode*&gt;(DaoHelper::instance()-&gt;getDao(DaoType::RAPIDCODE));
+        <span class="hljs-keyword">int</span> row = daoFetcher-&gt;getInfo(lookupType,
+                                 carrCode,
+                                 lookupCode,
+                                 saleDateTime,
+                                 travelDateTime,
+                                 usr);
+</div></code></pre>
+<p>2.根据_isCache字段来决定是查找Cache还是DB</p>
+<pre class="hljs"><code><div><span class="hljs-comment">//Engine\PricingEngine\DAO\daohelper.cc   Line 63</span>
+<span class="hljs-comment">//Engine\PricingEngine\DAO\daohelper.cc   Line 75</span>
+Dao* DaoHelper::getDao(<span class="hljs-keyword">int</span> type)
+{
+    <span class="hljs-keyword">if</span>(_isCache)
+        <span class="hljs-keyword">return</span> _daoFactoryCache-&gt;getDao(type);
+    <span class="hljs-keyword">else</span>
+        <span class="hljs-keyword">return</span> _daoFactoryDB-&gt;getDao(type);
+}
+</div></code></pre>
+<p>3.而_isCache字段每次请求都会重置</p>
+<pre class="hljs"><code><div><span class="hljs-comment">//Engine\PricingEngine\DAO\daohelper.cc   Line 85</span>
+<span class="hljs-comment">//DaoHelper中更改_isCache的函数</span>
+<span class="hljs-keyword">void</span> DaoHelper::setIsCache(<span class="hljs-keyword">bool</span> isCache)
+{
+    _isCache = isCache;
+}
+
+<span class="hljs-comment">//每次请求更改isCache,都是在svrProcess中根据请求来决定访问Cache还是DB</span>
+<span class="hljs-comment">//Engine\PricingEngine\Controller\patplugin.cc Line：645</span>
+<span class="hljs-comment">//Engine\PricingEngine\Controller\patplugin.cc Line：829</span>
+
+    <span class="hljs-built_in">string</span> oriSys = tosfHdr.oriSys;
+    <span class="hljs-keyword">int</span> dataType = getRequestDataType(_request, oriSys);
+    <span class="hljs-keyword">if</span>(DataType::CACHE == dataType)
+    {
+        <span class="hljs-keyword">try</span>
+        {
+            shmBase.attach(gIPCKey);
+        }
+        <span class="hljs-keyword">catch</span>(<span class="hljs-keyword">const</span> exception&amp; ex)
+        {
+            LOGFATAL(CACHEEERROR, <span class="hljs-string">"ShmBase attach error:%s"</span>, ex.what());
+            TODE::tpreturn(TPFAIL, <span class="hljs-number">0</span>, <span class="hljs-literal">NULL</span>, <span class="hljs-number">0L</span>, <span class="hljs-number">0</span>);
+        }
+        DaoHelper::instance()-&gt;setIsCache(<span class="hljs-literal">true</span>);
+    }
+    <span class="hljs-keyword">else</span>
+    {
+        DaoHelper::instance()-&gt;setIsCache(<span class="hljs-literal">false</span>);
+    }
+</div></code></pre>
+<p>4.如果查到数据缓存在map中</p>
+<pre class="hljs"><code><div><span class="hljs-comment">//Engine\PricingEngine\BusinessProcess\Pool\poolmanager.cc   Line 2378</span>
+       <span class="hljs-keyword">if</span>(row &gt; <span class="hljs-number">0</span>)
+       {
+           _poolRapidCode[key] = <span class="hljs-keyword">new</span> <span class="hljs-built_in">string</span>(usr);
+       }
+       <span class="hljs-keyword">else</span>
+       {
+           _poolRapidCode[key] = <span class="hljs-literal">NULL</span>;
+       }
+</div></code></pre>
+<h2 id="%E8%B0%83%E6%9F%A5%E8%8C%83%E5%9B%B4">调查范围</h2>
+<ol>
+<li>徐东雷从POOL-&gt;getRapidCode()为入口调查</li>
+<li>胡宝剑从虚函数getinfo()为入口调查</li>
+</ol>
+<h2 id="%E7%BB%93%E8%AE%BA">结论</h2>
+<ol>
+<li>每次请求带来判断访问Cache还是DB</li>
+<li>先从map取数据如果没有进行下一步</li>
+<li>根据请求继续从Cache或DB取数</li>
+</ol>
+
+</body>
+</html>
